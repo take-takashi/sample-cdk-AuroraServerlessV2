@@ -1,0 +1,39 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:16",
+  "customizations": {
+    // Configure properties specific to VS Code.
+    "vscode": {
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": [
+        "hediet.vscode-drawio",
+        "GrapeCity.gc-excelviewer",
+        "mechatroner.rainbow-csv",
+        "redhat.vscode-yaml",
+        "esbenp.prettier-vscode",
+        "donjayamanne.githistory",
+        "oderwat.indent-rainbow",
+        "MS-CEINTL.vscode-language-pack-ja",
+        "dbaeumer.vscode-eslint",
+        "bierner.markdown-mermaid",
+        "Gruntfuggly.todo-tree"
+      ],
+      "settings": {
+        "editor.tabSize": 2, // インデントタブサイズは2とする
+        "editor.insertSpaces": true, // インデントはスペースとする
+        "editor.defaultFormatter": "esbenp.prettier-vscode", // デフォルトフォーマッターをPrettierにする
+        "editor.formatOnSave": true, // 保存時にフォーマットする
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": true // ファイル保存時、ESLint による自動フォーマット
+        }
+      }
+    }
+  },
+  // codespaces接続時に実行されるコマンド
+  "postCreateCommand": "./.devcontainer/postCreateCommand.sh",
+  // codespaces接続時に実行されるコマンド
+  // "postAttachCommand": ""
+  "features": {
+    "ghcr.io/devcontainers/features/aws-cli:1": {},
+    "ghcr.io/devcontainers-contrib/features/aws-cdk:2": {},
+  }
+}
