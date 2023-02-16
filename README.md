@@ -1,2 +1,11 @@
 # sample-cdk-AuroraServerlessV2
-CDKでAuroraServerlessV2を立ててみる
+
+CDK で AuroraServerlessV2 を立ててみる
+
+# setup commands
+
+```
+mkdir cdk
+cd cdk
+cdk init --language typescript
+```
