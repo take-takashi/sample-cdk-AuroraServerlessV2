@@ -1,0 +1,2 @@
+# sample-cdk-AuroraServerlessV2
+CDKでAuroraServerlessV2を立ててみる
