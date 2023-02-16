@@ -10,6 +10,12 @@ cd cdk
 cdk init --language typescript
 ```
 
+# codespaces secret
+
+- AWS_ACCESS_KEY_ID
+- AWS_SECRET_ACCESS_KEY
+- AWS_DEFAULT_REGION
+
 # memo
 
 Isolated サブネットに踏み台 EC2 を作成しても SSM でアクセスできない。
