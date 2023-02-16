@@ -1,3 +1,0 @@
-#!/bin/bash
-
-WORKSPACE=$PWD

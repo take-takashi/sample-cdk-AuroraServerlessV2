@@ -29,11 +29,17 @@
     }
   },
   // codespaces接続時に実行されるコマンド
-  "postCreateCommand": "./.devcontainer/postCreateCommand.sh",
+  "postCreateCommand": {
+    "npm install": "cd cdk && npm ci",
+    "create .env 1": "echo '' > .env",
+    "create .env 2": "echo AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} >> .env",
+    "create .env 3": "echo AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} >> .env",
+    "create .env 4": "echo AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} >> .env"
+  },
   // codespaces接続時に実行されるコマンド
-  // "postAttachCommand": ""
+  "postAttachCommand": {},
   "features": {
     "ghcr.io/devcontainers/features/aws-cli:1": {},
-    "ghcr.io/devcontainers-contrib/features/aws-cdk:2": {},
+    "ghcr.io/devcontainers-contrib/features/aws-cdk:2": {}
   }
 }
