@@ -14,6 +14,12 @@ export class CdkStack extends cdk.Stack {
       ipAddresses: ec2.IpAddresses.cidr("10.0.0.0/16"),
     });
 
+    // create public subents
+    // 名前は「スタック名/VPC名/PublicSubnet*」になる
+    const publicSubnets = vpc.selectSubnets({
+      subnetType: ec2.SubnetType.PUBLIC,
+    });
+
     // create private subnets
     // 名前は「スタック名/VPC名/IsolatedSubnet*」になる
     const isolatedSubnets = vpc.selectSubnets({
@@ -37,7 +43,7 @@ export class CdkStack extends cdk.Stack {
         ec2.InstanceClass.T2,
         ec2.InstanceSize.MICRO
       ),
-      subnetSelection: isolatedSubnets,
+      subnetSelection: publicSubnets,
       securityGroup: ec2Sg,
     });
   }
