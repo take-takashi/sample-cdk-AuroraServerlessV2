@@ -1,5 +1,10 @@
 import * as cdk from "aws-cdk-lib";
-import { aws_ec2 as ec2, aws_s3 as s3, Tags } from "aws-cdk-lib";
+import {
+  aws_ec2 as ec2,
+  aws_s3 as s3,
+  aws_ssm as ssm,
+  Tags,
+} from "aws-cdk-lib";
 import { Construct } from "constructs";
 
 export class CdkStack extends cdk.Stack {
@@ -45,6 +50,14 @@ export class CdkStack extends cdk.Stack {
       ),
       subnetSelection: publicSubnets,
       securityGroup: ec2Sg,
+    });
+
+    // create parameter store
+    // 名前はparameterNameで指定した文字列
+    const paramStore = new ssm.StringParameter(this, "InstanceIdParameter", {
+      parameterName: `/${id}/BastionHostEc2InstanceId`,
+      stringValue: bastionHostEc2.instanceId,
+      tier: ssm.ParameterTier.STANDARD,
     });
 
     // create s3 bucket
