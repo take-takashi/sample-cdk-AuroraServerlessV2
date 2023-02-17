@@ -1,5 +1,5 @@
 import * as cdk from "aws-cdk-lib";
-import { aws_ec2 as ec2, Tags } from "aws-cdk-lib";
+import { aws_ec2 as ec2, aws_s3 as s3, Tags } from "aws-cdk-lib";
 import { Construct } from "constructs";
 
 export class CdkStack extends cdk.Stack {
@@ -45,6 +45,16 @@ export class CdkStack extends cdk.Stack {
       ),
       subnetSelection: publicSubnets,
       securityGroup: ec2Sg,
+    });
+
+    // create s3 bucket
+    const bucket = new s3.Bucket(this, "Bucket", {
+      versioned: true,
+      // bucket is not destroyed when stack is removed
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      publicReadAccess: false,
+      // バケットが空じゃなくても自動削除する
+      autoDeleteObjects: true,
     });
   }
 }
