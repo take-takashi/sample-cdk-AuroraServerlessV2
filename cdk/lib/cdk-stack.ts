@@ -48,6 +48,7 @@ export class CdkStack extends cdk.Stack {
     });
 
     // create s3 bucket
+    // 名前は「スタック名（lower case）-bucket******」
     const bucket = new s3.Bucket(this, "Bucket", {
       versioned: true,
       // bucket is not destroyed when stack is removed
