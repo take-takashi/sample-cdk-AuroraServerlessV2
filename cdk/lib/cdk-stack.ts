@@ -3,6 +3,7 @@ import {
   aws_ec2 as ec2,
   aws_s3 as s3,
   aws_ssm as ssm,
+  aws_iam as iam,
   Tags,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
@@ -18,6 +19,19 @@ export class CdkStack extends cdk.Stack {
       maxAzs: 2,
       ipAddresses: ec2.IpAddresses.cidr("10.0.0.0/16"),
     });
+
+    // add gateway endpoint to vpc
+    // この方法だとなぜか名前がつかない
+    const gatewayEndpoint = vpc.addGatewayEndpoint("GatewayEndpoint", {
+      service: ec2.GatewayVpcEndpointAwsService.S3,
+    });
+    gatewayEndpoint.addToPolicy(
+      new iam.PolicyStatement({
+        principals: [new iam.AnyPrincipal()],
+        actions: ["s3:*"],
+        resources: ["*"],
+      })
+    );
 
     // create public subents
     // 名前は「スタック名/VPC名/PublicSubnet*」になる
