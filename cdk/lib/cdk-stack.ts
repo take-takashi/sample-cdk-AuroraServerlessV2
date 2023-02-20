@@ -4,7 +4,9 @@ import {
   aws_s3 as s3,
   aws_ssm as ssm,
   aws_iam as iam,
+  aws_rds as rds,
   Tags,
+  Aspects,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 
@@ -83,6 +85,48 @@ export class CdkStack extends cdk.Stack {
       publicReadAccess: false,
       // バケットが空じゃなくても自動削除する
       autoDeleteObjects: true,
+    });
+
+    // create security group for RDS
+    // 名前はタグでつける必要がある
+    const rdsSg = new ec2.SecurityGroup(this, "RdsSecurityGroup", {
+      vpc: vpc,
+      securityGroupName: `${id}/RdsSecurityGroup`,
+    });
+    Tags.of(rdsSg).add("Name", `${id}/RdsSecurityGroup`);
+    // RDS SGにEC2 SGからの5432ポートの接続を許可する設定を追加
+    rdsSg.addIngressRule(
+      ec2.Peer.ipv4(ec2Sg.securityGroupId),
+      ec2.Port.tcp(5432),
+      "from bastion host ec2 sg"
+    );
+
+    // create a db cluster (postgres aurora serevrless v2)
+    // TODO 命名規則の調査とS3インポート&エクスポートの設定調査
+    const dbCluster = new rds.DatabaseCluster(this, "DbCluster", {
+      engine: rds.DatabaseClusterEngine.auroraPostgres({
+        version: rds.AuroraPostgresEngineVersion.VER_14_6,
+      }),
+      instances: 1,
+      credentials: rds.Credentials.fromGeneratedSecret("adminuser"),
+      instanceProps: {
+        vpc: vpc,
+        instanceType: new ec2.InstanceType("serverless"),
+        vpcSubnets: isolatedSubnets,
+        publiclyAccessible: false,
+      },
+    });
+
+    // add capacity to the db cluster to enable scaling
+    Aspects.of(dbCluster).add({
+      visit(node) {
+        if (node instanceof rds.CfnDBCluster) {
+          node.serverlessV2ScalingConfiguration = {
+            minCapacity: 0.5, // min capacity is 0.5 vCPU
+            maxCapacity: 1, // max capacity is 1 vCPU (default)
+          };
+        }
+      },
     });
   }
 }
