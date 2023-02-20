@@ -31,10 +31,7 @@
   // codespaces接続時に実行されるコマンド
   "postCreateCommand": {
     "npmInstall": "cd cdk && npm ci",
-    "createEnv1": "echo '' > .env",
-    "createEnv2": "echo AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} >> .env",
-    "createEnv3": "echo AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} >> .env",
-    "createEnv4": "echo AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} >> .env"
+    "createEnv": "echo '' > .env && echo AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} >> .env && echo AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} >> .env && echo AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} >> .env"
   },
   // codespaces接続時に実行されるコマンド
   "postAttachCommand": {},
