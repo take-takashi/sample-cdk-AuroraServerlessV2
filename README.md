@@ -26,9 +26,9 @@ Isolated サブネットに踏み台 EC2 を作成しても SSM でアクセス�
 
 その代わり、SSM でのみ接続するようにすれば SSH ポートとかは開けなくて良い。
 
-# TODO
+# タスク
 
 - ✅ S3 の構築
 - ✅ 踏み台ホストのインスタンス ID をパラメータストアに保存したい
-- AuroraServerlessV2 の構築
-- S3 への VPN エンドポイントの作成
+- ✅ AuroraServerlessV2 の構築
+- ✅ S3 への VPN エンドポイントの作成
