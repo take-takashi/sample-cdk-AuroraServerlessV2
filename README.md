@@ -2,12 +2,21 @@
 
 CDK で AuroraServerlessV2 を立ててみる
 
-# setup commands
+# setup commands for cdk
 
-```
+```sh
 mkdir cdk
 cd cdk
 cdk init --language typescript
+```
+
+# setup command for app
+
+```sh
+mkdir app
+cd app
+npx create-next-app@latest . --ts --eslint --experimental-app --src-dir --use-npm --import-alias "@/*"
+
 ```
 
 # codespaces secret
