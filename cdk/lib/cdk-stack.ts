@@ -27,6 +27,7 @@ export class CdkStack extends cdk.Stack {
     const gatewayEndpoint = vpc.addGatewayEndpoint("GatewayEndpoint", {
       service: ec2.GatewayVpcEndpointAwsService.S3,
     });
+    // gateway endpointにs3に対するアクセス許可を与える
     gatewayEndpoint.addToPolicy(
       new iam.PolicyStatement({
         principals: [new iam.AnyPrincipal()],
@@ -95,11 +96,7 @@ export class CdkStack extends cdk.Stack {
     });
     Tags.of(rdsSg).add("Name", `${id}/RdsSecurityGroup`);
     // RDS SGにEC2 SGからの5432ポートの接続を許可する設定を追加
-    rdsSg.addIngressRule(
-      ec2.Peer.ipv4(ec2Sg.securityGroupId),
-      ec2.Port.tcp(5432),
-      "from bastion host ec2 sg"
-    );
+    rdsSg.addIngressRule(ec2Sg, ec2.Port.tcp(5432), "from bastion host ec2 sg");
 
     // create a db cluster (postgres aurora serevrless v2)
     // TODO 命名規則の調査とS3インポート&エクスポートの設定調査
@@ -114,7 +111,10 @@ export class CdkStack extends cdk.Stack {
         instanceType: new ec2.InstanceType("serverless"),
         vpcSubnets: isolatedSubnets,
         publiclyAccessible: false,
+        securityGroups: [rdsSg],
       },
+      s3ExportBuckets: [bucket],
+      s3ImportBuckets: [bucket],
     });
 
     // add capacity to the db cluster to enable scaling
