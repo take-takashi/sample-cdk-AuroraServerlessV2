@@ -19,6 +19,20 @@ npx create-next-app@latest . --ts --eslint --experimental-app --src-dir --use-np
 
 ```
 
+さらに、`next.config.js`に`output: "standalone"`を追加
+
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    appDir: true,
+  },
+  output: "standalone",
+};
+
+module.exports = nextConfig;
+```
+
 # codespaces secret
 
 - AWS_ACCESS_KEY_ID
