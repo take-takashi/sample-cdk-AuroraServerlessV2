@@ -1,3 +1,11 @@
+import UserList from "./userList";
+
 export default function About() {
-  return <h1>Aboutのページです。</h1>;
+  return (
+    <div>
+      <h1>Aboutのページです。</h1>
+      {/* @ts-expect-error Server Component */}
+      <UserList></UserList>
+    </div>
+  );
 }
