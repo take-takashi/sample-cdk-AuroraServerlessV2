@@ -41,6 +41,9 @@ cd app
 # See https://tailwindcss.com/docs/guides/nextjs
 npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
+# install Tailwind UI
+# See https://tailwindui.com/documentation
+npm install @headlessui/react @heroicons/react
 ```
 
 # codespaces secret
