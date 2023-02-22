@@ -33,6 +33,16 @@ const nextConfig = {
 module.exports = nextConfig;
 ```
 
+## add package
+
+```sh
+cd app
+# install Tailwind CSS
+# See https://tailwindcss.com/docs/guides/nextjs
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+```
+
 # codespaces secret
 
 - AWS_ACCESS_KEY_ID
