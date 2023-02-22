@@ -68,3 +68,4 @@ Isolated サブネットに踏み台 EC2 を作成しても SSM でアクセス�
 - cdk で lambda+API Gateway の作成
 - API Gateway にドメイン適用
 - Nextjs13 の UI 決定
+- Tailwind UI 試してみたい
