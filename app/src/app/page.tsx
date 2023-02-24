@@ -1,12 +1,15 @@
-import { Inter } from "@next/font/google";
-import styles from "./page.module.css";
+"use client";
 
-const inter = Inter({ subsets: ["latin"] });
+import { Button } from "@mui/material";
+import { Inter } from "@next/font/google";
 
 export default function Home() {
   return (
-    <main className="text-3xl font-bold underline">
+    <main>
       <p>hello world.</p>
+      <Button variant="contained" sx={{ bgcolor: "primary.main" }}>
+        Text
+      </Button>
     </main>
   );
 }
