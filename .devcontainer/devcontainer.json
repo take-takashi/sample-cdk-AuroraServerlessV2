@@ -15,18 +15,19 @@
     "vscode": {
       // Add the IDs of extensions you want installed when the container is created.
       "extensions": [
-		"hediet.vscode-drawio",
-		"GrapeCity.gc-excelviewer",
-		"mechatroner.rainbow-csv",
-		"redhat.vscode-yaml",
-		"esbenp.prettier-vscode",
-		"donjayamanne.githistory",
-		"oderwat.indent-rainbow",
-		"dbaeumer.vscode-eslint",
-		"bierner.markdown-mermaid",
-		"Gruntfuggly.todo-tree",
-		"humao.rest-client"
-	],
+        "hediet.vscode-drawio",
+        "GrapeCity.gc-excelviewer",
+        "mechatroner.rainbow-csv",
+        "redhat.vscode-yaml",
+        "esbenp.prettier-vscode",
+        "donjayamanne.githistory",
+        "oderwat.indent-rainbow",
+        "dbaeumer.vscode-eslint",
+        "bierner.markdown-mermaid",
+        "Gruntfuggly.todo-tree",
+        "humao.rest-client",
+        "Prisma.prisma"
+      ],
       "settings": {
         "editor.tabSize": 2, // インデントタブサイズは2とする
         "editor.insertSpaces": true, // インデントはスペースとする
@@ -44,6 +45,11 @@
   },
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
+
+  // コンテナ内の環境変数定義
+  "containerEnv": {
+    "DATABASE_URL": "${localEnv:PRD_DATABASE_URL}"
+  },
 
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": "sh .devcontainer/postCreateCommand.sh",
