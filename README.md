@@ -68,6 +68,7 @@ npx prisma init
 - AWS_SECRET_ACCESS_KEY
 - AWS_DEFAULT_REGION
 - PRD_DATABASE_URL
+- DEV_DATABASE_URL
 
   (See https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases/connect-your-database-typescript-postgres)
 
@@ -89,5 +90,6 @@ Isolated サブネットに踏み台 EC2 を作成しても SSM でアクセス�
 - ✅ S3 への VPN エンドポイントの作成
 - cdk で lambda+API Gateway の作成
 - API Gateway にドメイン適用
-- Nextjs13 の UI 決定
-- Tailwind UI 試してみたい
+- ✅ Nextjs13 の UI 決定
+- ✅ Tailwind UI 試してみたい
+- ✅ Prisma 利用テスト
