@@ -48,7 +48,8 @@
 
   // コンテナ内の環境変数定義
   "containerEnv": {
-    "DATABASE_URL": "${localEnv:PRD_DATABASE_URL}"
+    // 不要だったため削除
+    //"DATABASE_URL": "${localEnv:PRD_DATABASE_URL}"
   },
 
   // Use 'postCreateCommand' to run commands after the container is created.
