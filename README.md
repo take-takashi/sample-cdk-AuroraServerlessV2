@@ -52,7 +52,15 @@ npm install @mui/material @emotion/react @emotion/styled
 
 # install prisma
 npm install -D prisma
+npx prisma init
 ```
+
+### prisma setup
+
+- .env ファイルに`DATABASE_URL`を記載
+- `schema.prisma`ファイルを編集（テーブル構造の定義）
+- `npx prisma migrate dev --name init`を実行（--name 以降は CommitMessage のようだ）
+- `npx prisma generare`を実行
 
 # codespaces secret
 
@@ -60,6 +68,8 @@ npm install -D prisma
 - AWS_SECRET_ACCESS_KEY
 - AWS_DEFAULT_REGION
 - PRD_DATABASE_URL
+
+  (See https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases/connect-your-database-typescript-postgres)
 
 # memo
 
