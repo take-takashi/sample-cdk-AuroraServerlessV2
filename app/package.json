@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "startSession": "sh ../cmd/startSession.sh",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "prisma:studio": "prisma studio"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
