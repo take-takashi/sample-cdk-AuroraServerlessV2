@@ -49,6 +49,9 @@ npm install @headlessui/react @heroicons/react
 
 # install MUI5
 npm install @mui/material @emotion/react @emotion/styled
+
+# install prisma
+npm install -D prisma
 ```
 
 # codespaces secret
