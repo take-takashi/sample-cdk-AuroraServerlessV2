@@ -4,6 +4,9 @@ COPY package*.json ./
 RUN npm ci
 COPY . ./
 RUN npm run build
+# prisma
+COPY ./prisma ./prisma
+RUN npx prisma generate
 
 # Use a common base image to reduce the cold start time
 FROM amazon/aws-lambda-nodejs:16
@@ -18,8 +21,8 @@ COPY --from=builder /build/.next/static ./.next/static
 COPY --from=builder /build/.next/standalone ./
 # env copy
 COPY --from=builder /build/.env.production ./.env
-# prisma copy(local)
-#COPY ./prisma ./prisma
+# for prisma
+COPY --from=builder /build/node_modules/.prisma/client ./node_modules/.prisma/client
 
 
 # Changes due to the base image
