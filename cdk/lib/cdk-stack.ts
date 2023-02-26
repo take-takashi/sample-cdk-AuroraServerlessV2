@@ -1,3 +1,5 @@
+import { HttpApi } from "@aws-cdk/aws-apigatewayv2-alpha";
+import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
 import * as cdk from "aws-cdk-lib";
 import {
   aws_ec2 as ec2,
@@ -5,8 +7,11 @@ import {
   aws_ssm as ssm,
   aws_iam as iam,
   aws_rds as rds,
+  aws_lambda as lambda,
+  aws_ecr_assets as ecrAssets,
   Tags,
   Aspects,
+  CfnOutput,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 
@@ -77,7 +82,53 @@ export class CdkStack extends cdk.Stack {
       tier: ssm.ParameterTier.STANDARD,
     });
 
+    /* ========================================================================
+     * VPC Lambda (docker image function)
+     */
+
+    // create security group for VPC Lambda
+    // RDSからのアクセス許可に必要
+    // 名前はタグでつける必要がある
+    const lambdaSg = new ec2.SecurityGroup(this, "LambdaSg", {
+      vpc: vpc,
+      securityGroupName: `${id}/LambdaSg`,
+    });
+    Tags.of(lambdaSg).add("Name", `${id}/LambdaSg`);
+
+    // create Docker Image Function (Lambda)
+    // TODO 命名規則調査
+    const dockerLambda = new lambda.DockerImageFunction(this, "DockerIambda", {
+      functionName: `${id}/DockerLambda`,
+      code: lambda.DockerImageCode.fromImageAsset("../../app", {
+        platform: ecrAssets.Platform.LINUX_AMD64,
+      }),
+      memorySize: 256,
+      timeout: cdk.Duration.seconds(30),
+      vpc: vpc,
+      securityGroups: [lambdaSg],
+    });
+
+    // Amazon API Gateway HTTP APIの定義
+    // TODO 命名規則調査
+    const api = new HttpApi(this, "Api", {
+      apiName: `${id}/Api`,
+      defaultIntegration: new HttpLambdaIntegration(
+        "Integration",
+        dockerLambda
+      ),
+    });
+
+    // コンソールへデプロイ結果の表示
+    new CfnOutput(this, "ApiEndpoint", {
+      value: api.apiEndpoint,
+    });
+
+    /* ========================================================================
+     * RDS (Aurora Serverless v2 postgres)
+     */
+
     // create s3 bucket
+    // RDSに対してS3からImportとS3へExportに利用するためのバケット
     // 名前は「スタック名（lower case）-bucket******」
     const bucket = new s3.Bucket(this, "Bucket", {
       versioned: true,
@@ -97,9 +148,11 @@ export class CdkStack extends cdk.Stack {
     Tags.of(rdsSg).add("Name", `${id}/RdsSecurityGroup`);
     // RDS SGにEC2 SGからの5432ポートの接続を許可する設定を追加
     rdsSg.addIngressRule(ec2Sg, ec2.Port.tcp(5432), "from bastion host ec2 sg");
+    // RDS SGにVPC Lambdaからの5432ポートの接続を許可する設定を追加
+    rdsSg.addIngressRule(lambdaSg, ec2.Port.tcp(5432), "from vpc lambda sg");
 
     // create a db cluster (postgres aurora serevrless v2)
-    // TODO 命名規則の調査とS3インポート&エクスポートの設定調査
+    // TODO 命名規則の調査
     const dbCluster = new rds.DatabaseCluster(this, "DbCluster", {
       engine: rds.DatabaseClusterEngine.auroraPostgres({
         version: rds.AuroraPostgresEngineVersion.VER_14_6,
