@@ -10,6 +10,15 @@ cd cdk
 cdk init --language typescript
 ```
 
+## DockerImageFunction のデプロイ準備
+
+```sh
+npm i @aws-cdk/aws-apigatewayv2-alpha@2.65.0-alpha.0
+npm i @aws-cdk/aws-apigatewayv2-alpha@2.65.0-alpha.0
+```
+
+- この後、package.json のバージョンを固定にしておく（「^」->「」）
+
 # setup command for app
 
 ```sh
