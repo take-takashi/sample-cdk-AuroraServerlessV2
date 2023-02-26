@@ -91,15 +91,15 @@ export class CdkStack extends cdk.Stack {
     // 名前はタグでつける必要がある
     const lambdaSg = new ec2.SecurityGroup(this, "LambdaSg", {
       vpc: vpc,
-      securityGroupName: `${id}/LambdaSg`,
+      securityGroupName: `${id}-LambdaSg`,
     });
     Tags.of(lambdaSg).add("Name", `${id}/LambdaSg`);
 
     // create Docker Image Function (Lambda)
     // TODO 命名規則調査
-    const dockerLambda = new lambda.DockerImageFunction(this, "DockerIambda", {
-      functionName: `${id}/DockerLambda`,
-      code: lambda.DockerImageCode.fromImageAsset("../../app", {
+    const dockerLambda = new lambda.DockerImageFunction(this, "DockerLambda", {
+      functionName: `${id}-DockerLambda`,
+      code: lambda.DockerImageCode.fromImageAsset("../app", {
         platform: ecrAssets.Platform.LINUX_AMD64,
       }),
       memorySize: 256,
