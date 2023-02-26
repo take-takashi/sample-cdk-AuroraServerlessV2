@@ -19,6 +19,8 @@ npx create-next-app@latest . --ts --eslint --experimental-app --src-dir --use-np
 
 ```
 
+## Next.js standalone モードの設定
+
 さらに、`next.config.js`に`output: "standalone"`を追加
 
 ```js
@@ -32,6 +34,12 @@ const nextConfig = {
 
 module.exports = nextConfig;
 ```
+
+### AWS Lambda に DockerImageFunction としてデプロイするための準備
+
+- `.dockerignore`ファイルを作成
+- `Dockerfile`ファイルを作成
+- ※この後に cdk 側で DockerImageFunction のデプロイ定義を書く必要がある
 
 ## add package
 
