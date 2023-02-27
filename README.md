@@ -2,6 +2,10 @@
 
 CDK で AuroraServerlessV2 を立ててみる
 
+# Github Codespaces の注意点
+
+- おそらく 2GB メモリだと足りないので 4GB で動かした方が良い
+
 # setup commands for cdk
 
 ```sh
@@ -50,6 +54,16 @@ module.exports = nextConfig;
 - `Dockerfile`ファイルを作成
 - ※この後に cdk 側で DockerImageFunction のデプロイ定義を書く必要がある
 
+### Dockerfile の中に prisma を使う工夫が必要
+
+- `npx prisma generate`
+
+  ※ prisma ディレクトリの事前コピーが必要
+
+- `prisma generate`後の`node_modules/.prisma`と`node_modules/@prisma`フォルダのコピー
+
+  ※ Lambda 側で`prisma client`作成に必要のようだ
+
 ## add package
 
 ```sh
@@ -78,6 +92,14 @@ npx prisma init
 - `schema.prisma`ファイルを編集（テーブル構造の定義）
 - `npx prisma migrate dev --name init`を実行（--name 以降は CommitMessage のようだ）
 - `npx prisma generare`を実行
+- `schame.prisma`ファイルに Lambda 用の記載も必要
+  ```prisma
+  # See https://zenn.dev/taroman_zenn/articles/da11f27537c37d
+  generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "rhel-openssl-1.0.x"]
+  }
+  ```
 
 # codespaces secret
 
@@ -105,8 +127,9 @@ Isolated サブネットに踏み台 EC2 を作成しても SSM でアクセス�
 - ✅ 踏み台ホストのインスタンス ID をパラメータストアに保存したい
 - ✅ AuroraServerlessV2 の構築
 - ✅ S3 への VPN エンドポイントの作成
-- cdk で lambda+API Gateway の作成
+- ✅ cdk で lambda+API Gateway の作成
 - API Gateway にドメイン適用
 - ✅ Nextjs13 の UI 決定
 - ✅ Tailwind UI 試してみたい
 - ✅ Prisma 利用テスト
+- npm script の整理（特に prima generate）

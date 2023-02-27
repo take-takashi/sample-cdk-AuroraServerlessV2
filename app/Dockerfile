@@ -4,7 +4,7 @@ COPY package*.json ./
 RUN npm ci
 COPY . ./
 RUN npm run build
-# prisma
+# for prisma
 COPY ./prisma ./prisma
 RUN npx prisma generate
 
@@ -19,11 +19,12 @@ COPY --from=builder /build/next.config.js ./
 COPY --from=builder /build/public ./public
 COPY --from=builder /build/.next/static ./.next/static
 COPY --from=builder /build/.next/standalone ./
-# env copy
+# env copy (for prisma)
 COPY --from=builder /build/.env.production ./.env
 # for prisma
-COPY --from=builder /build/node_modules/.prisma/client ./node_modules/.prisma/client
-
+# prisma generateの後に以下の.prisma, @prismaディレクトリをコピーすると動いた
+COPY --from=builder /build/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /build/node_modules/@prisma ./node_modules/@prisma
 
 # Changes due to the base image
 ENTRYPOINT ["node"]
